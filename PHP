@@ -1,6 +1,26 @@
+QUESTION1:
 <?php
 $capital = 67;
 print("Variable capital is $capital<br>");
 print("Variable CaPiTaL is $CaPiTaL");
 ?>
+OUTPUT: Variable capital is 67
+Variable CaPiTaL is 
 
+QUESTION 2:
+<?php
+echo "    1\t2\t3\n";
+for ($i = 1; $i <= 3; $i++) {
+    echo $i . "\t";
+    for ($j = 1; $j <= 3; $j++) {
+        echo number_format($i / $j, 2) . "\t";
+    }
+    echo "\n";
+}
+?>
+OUTPUT:    1	    2 	3
+        1	1.00	0.50	0.33	
+        2	2.00	1.00	0.67	
+        3	3.00	1.50	1.00
+
+QUESTION 3:
