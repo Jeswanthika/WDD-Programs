@@ -74,22 +74,7 @@ if (isset($_GET['logout'])) {
 
 </body>
 </html>
-OUTPUT:<!DOCTYPE html>
-<html>
-<head>
-    <title>Session Example</title>
-</head>
-<body>
 
-    <form method="post">
-        <label>Enter your name:</label>
-        <input type="text" name="username" required>
-        <button type="submit">Submit</button>
-    </form>
-
-
-</body>
-</html>
 
 QUESTION 13:
 <?php
