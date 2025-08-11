@@ -45,4 +45,45 @@ QUESTION 3:
 </html>
 
 
+QUESTION 5:
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Purchase Calculator</title>
+</head>
+<body>
+
+<h2>Enter Price and Quantity for 3 Items</h2>
+
+<form method="post">
+    Item 1: Price <input type="number" name="price1" step="0.01" required>
+    Qty <input type="number" name="qty1" required><br><br>
+
+    Item 2: Price <input type="number" name="price2" step="0.01" required>
+    Qty <input type="number" name="qty2" required><br><br>
+
+    Item 3: Price <input type="number" name="price3" step="0.01" required>
+    Qty <input type="number" name="qty3" required><br><br>
+
+    <input type="submit" name="submit" value="Calculate Total">
+</form>
+
+<?php
+if (isset($_POST['submit'])) {
+    $subtotal = ($_POST['price1'] * $_POST['qty1']) +
+                ($_POST['price2'] * $_POST['qty2']) +
+                ($_POST['price3'] * $_POST['qty3']);
+
+    $tax = $subtotal * 0.10;
+    $total = $subtotal + $tax;
+
+    echo "<h3>Result:</h3>";
+    echo "Subtotal: ₹" . number_format($subtotal, 2) . "<br>";
+    echo "Tax (10%): ₹" . number_format($tax, 2) . "<br>";
+    echo "Total Cost: ₹" . number_format($total, 2);
+}
+?>
+
+</body>
+</html>
 
