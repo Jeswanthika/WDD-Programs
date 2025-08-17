@@ -1135,3 +1135,256 @@ if (file_exists($filename)) {
     echo "File not found!";
 }
 ?>
+
+QUESTION 92:
+<?php
+setcookie("username", "Lakshmisree", time() + 60, "/");
+if (isset($_COOKIE["username"])) {
+    echo "Welcome, " . $_COOKIE["username"];
+} else {
+    echo "Hello, new visitor!";
+}
+?>
+
+QUESTION 93:
+<?php
+session_start();
+if (isset($_SESSION['visit_count'])) {
+    $_SESSION['visit_count']++;
+} else {
+    $_SESSION['visit_count'] = 1;
+}
+echo "You have visited this page " . $_SESSION['visit_count'] . " times.";
+?>
+
+QUESTION 94:
+<?php
+$file = "test.txt";
+$fp = fopen($file, "r");
+echo "<b>Reading file (r):</b><br>";
+echo nl2br(fread($fp, filesize($file))) . "<br><br>";
+fclose($fp);
+$fp = fopen($file, "r+");
+fwrite($fp, "Start of file changed.\n");
+fclose($fp);
+$fp = fopen($file, "w");
+fwrite($fp, "This text overwrites the file.\n");
+fclose($fp);
+$fp = fopen($file, "w+");
+fwrite($fp, "Overwritten again, but can also read.\n");
+rewind($fp);
+echo "<b>w+ content:</b><br>" . nl2br(fread($fp, filesize($file))) . "<br><br>";
+fclose($fp);
+$fp = fopen($file, "a");
+fwrite($fp, "Appended line (a mode).\n");
+fclose($fp);
+$fp = fopen($file, "a+");
+fwrite($fp, "Appended again with a+ mode.\n");
+fclose($fp);
+echo "<b>File size:</b> " . filesize($file) . " bytes<br><br>";
+copy($file, "copy_test.txt");
+echo "File copied to copy_test.txt<br>";
+rename("copy_test.txt", "renamed_test.txt");
+echo "copy_test.txt renamed to renamed_test.txt<br>";
+unlink("renamed_test.txt");
+echo "renamed_test.txt deleted<br>";
+?>
+
+QUESTION 95:
+                                                          PRODUCTS.PHP
+
+<?php
+session_start();
+$products = [
+    1 => "Laptop",
+    2 => "Smartphone",
+    3 => "Headphones"
+];
+if (isset($_GET['add'])) {
+    $id = $_GET['add'];
+    $_SESSION['cart'][] = $products[$id];
+    echo "<p style='color:green;'>Item added to cart!</p>";
+}
+?>
+<h2>Product List</h2>
+<ul>
+<?php foreach ($products as $id => $name): ?>
+    <li>
+        <?php echo $name; ?> 
+        <a href="?add=<?php echo $id; ?>">Add to Cart</a>
+    </li>
+<?php endforeach; ?>
+</ul>
+
+<p><a href="cart.php">View Cart</a></p>
+
+                                                                CART.PHP   
+
+<?php
+session_start();
+?>
+<h2>Your Shopping Cart</h2>
+<?php
+if (!empty($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $item) {
+        echo $item . "<br>";
+    }
+} else {
+    echo "<p>Your cart is empty.</p>";
+}
+?>
+<p><a href="products.php">Back to Products</a></p>
+<form method="post">
+    <input type="submit" name="clear" value="Clear Cart">
+</form>
+<?php
+if (isset($_POST['clear'])) {
+    unset($_SESSION['cart']);
+    header("Location: cart.php");
+}
+?>
+
+QUESTION 96:
+<?php
+session_start();
+
+if (!isset($_SESSION['username'])) {
+    $_SESSION['username'] = "Lakshmisree";
+    $_SESSION['role'] = "Admin";
+    echo "Session variables have been set.<br>";
+    echo "Refresh the page to see them in action.";
+} else {
+    echo "Welcome, " . $_SESSION['username'] . "<br>";
+    echo "Your role is: " . $_SESSION['role'];
+}
+?>
+
+QUESTION 97:
+<?php
+session_start(); 
+if (!isset($_SESSION['name'])) {
+    $_SESSION['name'] = "Lakshmisree";
+    $_SESSION['count'] = 1;
+    echo "Session started and variables set.<br>";
+} else {
+    $_SESSION['count']++;
+    echo "Welcome back, " . $_SESSION['name'] . "<br>";
+    echo "Visits: " . $_SESSION['count'] . "<br>";
+}
+echo "Session ID: " . session_id() . "<br>";
+if ($_SESSION['count'] == 3) {
+    session_regenerate_id(true);
+    echo "Session ID regenerated.<br>";
+}
+if ($_SESSION['count'] == 5) {
+    session_unset();
+    echo "Session variables cleared.<br>";
+}
+if ($_SESSION['count'] == 6) {
+    session_destroy();
+    echo "Session destroyed.<br>";
+}
+?>
+
+QUESTION 99:
+<?php
+session_start(); 
+if (!isset($_SESSION['counter'])) {
+    $_SESSION['counter'] = 0;
+    echo "New session started.<br>";
+}
+$_SESSION['counter']++;
+echo "You have visited this page " . $_SESSION['counter'] . " times.<br>";
+echo "<a href='" . $_SERVER['PHP_SELF'] . "?PHPSESSID=" . session_id() . "'>Reload Page with Session ID</a><br><br>";
+?>
+<form method="post" enctype="multipart/form-data">
+    <label>Select file to upload:</label>
+    <input type="file" name="myfile">
+    <input type="submit" value="Upload">
+</form>
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['myfile'])) {
+    $uploadDir = "uploads/";
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir); // create uploads folder if not exists
+    }
+    $targetFile = $uploadDir . basename($_FILES['myfile']['name']);
+    if (file_exists($targetFile)) {
+        echo "<p style='color:red;'>Error: This file already exists. Please choose a different file.</p>";
+    } else {
+        if (move_uploaded_file($_FILES['myfile']['tmp_name'], $targetFile)) {
+            echo "<p style='color:green;'>File uploaded successfully!</p>";
+        } else {
+            echo "<p style='color:red;'>Error uploading file.</p>";
+        }
+    }
+}
+?>
+
+QUESTION 102:
+<?php
+session_start();
+$_SESSION["username"] = "Lakshmisree";
+$_SESSION["email"] = "lakshmisree@example.com";
+echo "Username: " . $_SESSION["username"] . "<br>";
+echo "Email: " . $_SESSION["email"] . "<br>";
+if (session_status() == PHP_SESSION_ACTIVE) {
+    echo "Session is active!";
+}
+?>
+
+QUESTION 103:
+<?php
+session_start(); // Start the session
+if (isset($_SESSION['pageviews'])) {
+    $_SESSION['pageviews']++; 
+} else {
+    $_SESSION['pageviews'] = 1; 
+}
+echo "You have visited this page " . $_SESSION['pageviews'] . " times.";
+?>
+
+QUESTION 104:
+<?php
+$filename = "test.txt"; 
+$n = 3; 
+if (file_exists($filename)) {
+    $file = fopen($filename, "r");
+    $currentLine = 1;
+    $found = false;
+    while (!feof($file)) {
+        $line = fgets($file);
+        if ($currentLine == $n) {
+            echo "Line $n: " . htmlspecialchars($line);
+            $found = true;
+            break;
+        }
+        $currentLine++;
+    }
+    fclose($file);
+    if (!$found) {
+        echo "no data";
+    }
+} else {
+    echo "File not found!";
+}
+?>
+
+QUESTION 105:
+<?php
+function getStartAndEndDate($week, $year) {
+    $startDate = new DateTime();
+    $startDate->setISODate($year, $week);
+    $endDate = clone $startDate;
+    $endDate->modify('+6 days');
+    return array(
+        'start' => $startDate->format('Y-m-d'),
+        'end'   => $endDate->format('Y-m-d')
+    );
+}
+$week = 12;
+$year = 2014;
+$result = getStartAndEndDate($week, $year);
+echo "Week $week of $year starts on: " . $result['start'] . "<br>";
+echo "Week $week of $year ends on: " . $result['end'];
+?>
