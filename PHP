@@ -256,3 +256,578 @@ function generatePassword($length = 12) {
 echo "<h3>Random Password Generator</h3>";
 echo "Generated Password: <b>" . generatePassword(12) . "</b>";
 ?>
+
+QUESTION 31:
+ <?php
+$fruits = array("Apple", "Banana", "Cherry", "Mango");
+array_shift($fruits); 
+print_r($fruits);
+?>
+
+QUESTION 33:
+<?php
+$matrix = array(
+    array(1, 2, 3),  
+    array(4, 5, 6),   
+    array(7, 8, 9)    
+);
+$value = $matrix[1][2];
+echo "The value in the second row and third column is: $value";
+?>
+
+QUESTION 34:
+<?php
+$text = "PHP is great. I love PHP because PHP is powerful.";
+$pattern = "/\bPHP\b/"; 
+$replacement = "Java";
+$result = preg_replace($pattern, $replacement, $text);
+echo $result;
+?>
+
+QUESTION 35:
+<?php
+$strings = array(
+    "Hello, welcome to PHP programming.",
+    "PHP is great for web development.",
+    "Learning PHP is fun!"
+);
+$search = "PHP";
+foreach ($strings as $str) {
+    if (strpos($str, $search) !== false) { 
+        echo "The string '$str' contains '$search'.<br>";
+    } else {
+        echo "The string '$str' does NOT contain '$search'.<br>";
+    }
+}
+?>
+
+QUESTION 36:
+<?php
+$fruits = array("Apple", "Banana", "Cherry", "Mango", "Orange");
+echo "The third fruit is: " . $fruits[2];
+?>
+
+QUESTION 38:
+<?php
+$fruits = array("Apple", "Banana", "Cherry", "Mango");
+$total = count($fruits);
+$i = 0;
+while ($i < $total) {
+    echo "Fruit $i: " . $fruits[$i] . "<br>";
+    $i++;
+}
+?>
+
+QUESTION 40:
+<?php
+$text = "Hello@123! Welcome_to PHP#2025.";
+$chars = str_split($text);
+$allowed = array_merge(range('a', 'z'), range('A', 'Z'), range('0', '9'), array(' '));
+$result = array_filter($chars, function($char) use ($allowed) {
+    return in_array($char, $allowed);
+});
+$cleanString = implode('', $result);
+echo "Original: $text<br>";
+echo "Cleaned: $cleanString";
+?>
+
+QUESTION 41:
+<?php
+$text = "Contact us at support@example.com or sales@myshop.org. You can also reach admin123@domain.net.";
+$pattern = "/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}/";
+preg_match_all($pattern, $text, $matches);
+$emails = $matches[0];
+echo "Found Email Addresses:<br>";
+foreach ($emails as $email) {
+    echo $email . "<br>";
+}
+?>
+
+QUESTION 42:
+<?php
+$marks1 = array(360,310,310,330,313,375,456,111,256);
+$marks2 = array(350,340,356,330,321);
+$marks3 = array(630,340,570,635,434,255,298);
+$allMarks = array_merge($marks1, $marks2, $marks3);
+$maxMark = max($allMarks);
+$minMark = min($allMarks);
+echo "Maximum Marks: " . $maxMark . "<br>";
+echo "Minimum Marks: " . $minMark;
+?>
+
+QUESTION 43:
+<?php
+$passwords = array(
+    "Abc123!@",  
+    "password",
+    "PASS123@",  
+    "Passw1@",
+    "ValidPass123#"
+);
+
+$pattern = "/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/";
+
+foreach ($passwords as $pwd) {
+    if (preg_match($pattern, $pwd)) {
+        echo " '$pwd' is a valid password.<br>";
+    } else {
+        echo " '$pwd' is NOT valid.<br>";
+    }
+}
+?>
+
+QUESTION 45:
+<?php
+function arrayDiffMulti($array1, $array2) {
+    $result = array();
+    foreach ($array1 as $key => $value) {
+        if (is_array($value)) {   
+            if (!isset($array2[$key]) || !is_array($array2[$key])) {
+                $result[$key] = $value;
+            } else {
+                $diff = arrayDiffMulti($value, $array2[$key]);
+                if (!empty($diff)) {
+                    $result[$key] = $diff;
+                }
+            }
+        } else {
+            // Compare scalar values
+            if (!in_array($value, $array2)) {
+                $result[$key] = $value;
+            }
+        }
+    }
+    return $result;
+}
+$array1 = array(
+    "fruits" => array("apple", "banana", "mango"),
+    "numbers" => array(1, 2, 3, 4),
+    "colors" => array("red", "green")
+);
+$array2 = array(
+    "fruits" => array("apple", "banana"),
+    "numbers" => array(2, 3, 4, 5),
+    "colors" => array("green", "blue")
+);
+$difference = arrayDiffMulti($array1, $array2);
+echo "<pre>";
+print_r($difference);
+echo "</pre>";
+?>
+
+QUESTION 46:
+<?php
+$fruits = array("apple", "banana", "mango", "orange", "grape");
+$searchValue = "mango";
+$index = array_search($searchValue, $fruits);
+if ($index !== false) {
+    echo "The index of '$searchValue' is: " . $index;
+} else {
+    echo "'$searchValue' was not found in the array.";
+}
+?>
+
+QUESTION 47:
+<?php
+$x = array(1, 2, 3, 4, 5);
+unset($x[2]);
+$x = array_values($x);
+foreach ($x as $value) {
+    echo $value . " ";
+}
+?>
+
+QUESTION 48:
+<?php
+echo "<h2> Record Number Handling in PHP</h2>";
+$students = array("Anand", "Priya", "Karthik", "Divya", "Lakshmi");
+echo "<h3>Example 1: Record Numbers with Array</h3>";
+$recordNumber = 1;
+foreach ($students as $name) {
+    echo "Record #$recordNumber: $name<br>";
+    $recordNumber++;
+}
+$studentMarks = array(
+    array("name" => "Anand", "marks" => 85),
+    array("name" => "Priya", "marks" => 92),
+    array("name" => "Karthik", "marks" => 78),
+    array("name" => "Divya", "marks" => 88)
+);
+echo "<h3>Example 2: Record Numbers with Multidimensional Array (Simulated DB)</h3>";
+$recordNumber = 1;
+foreach ($studentMarks as $student) {
+    echo "Record #$recordNumber: " . $student['name'] . " - Marks: " . $student['marks'] . "<br>";
+    $recordNumber++;
+}
+$items = array("Pen", "Pencil", "Eraser");
+echo "<h3>Example 3: Using array_keys() to Get Record Numbers</h3>";
+foreach (array_keys($items) as $index) {
+    echo "Record #" . ($index + 1) . ": " . $items[$index] . "<br>";
+}
+?>
+
+QUESTION 49:
+<?php
+echo "<h2> Sports Team Player Performance Evaluation</h2>";
+$players = array(
+    array("name" => "Dhanuja", "matches" => 15, "runs" => 820, "wickets" => 5),
+    array("name" => "Lakshmi", "matches" => 18, "runs" => 1040, "wickets" => 8),
+    array("name" => "Janani",  "matches" => 20, "runs" => 970,  "wickets" => 15),
+    array("name" => "Amirtha", "matches" => 12, "runs" => 600,  "wickets" => 2),
+    array("name" => "Gopika",  "matches" => 22, "runs" => 1200, "wickets" => 18),
+    array("name" => "Jes",     "matches" => 16, "runs" => 750,  "wickets" => 6)
+);
+function calculatePerformanceIndex($runs, $matches, $wickets) {
+    return ($runs / $matches) + ($wickets * 5);
+}
+foreach ($players as &$player) {
+    $player['PI'] = round(calculatePerformanceIndex($player['runs'], $player['matches'], $player['wickets']), 2);
+}
+unset($player); 
+$totalRuns = array_sum(array_column($players, 'runs'));
+$totalWickets = array_sum(array_column($players, 'wickets'));
+$totalMatches = array_sum(array_column($players, 'matches'));
+$averageRuns = round($totalRuns / count($players), 2);
+$averageWickets = round($totalWickets / count($players), 2);
+usort($players, function($a, $b) {
+    return $b['PI'] <=> $a['PI']; // Descending order
+});
+echo "<table border='1' cellpadding='5'>";
+echo "<tr><th>Rank</th><th>Name</th><th>Matches</th><th>Runs</th><th>Wickets</th><th>Performance Index</th></tr>";
+$rank = 1;
+foreach ($players as $player) {
+    echo "<tr>
+            <td>{$rank}</td>
+            <td>{$player['name']}</td>
+            <td>{$player['matches']}</td>
+            <td>{$player['runs']}</td>
+            <td>{$player['wickets']}</td>
+            <td>{$player['PI']}</td>
+          </tr>";
+    $rank++;
+}
+echo "</table>";
+echo "<h3> Team Statistics</h3>";
+echo "Average Runs per Player: $averageRuns<br>";
+echo "Average Wickets per Player: $averageWickets<br>";
+echo "Total Matches Played by Team: $totalMatches<br>";
+?>
+
+QUESTION 50:
+<?php
+$names = array("Dhanuja", "Lakshmi", "Janani", "Amirtha", "Gopika", "Jes");
+echo "<h2> Original Array</h2>";
+print_r($names);
+$lowercaseArray = array_map('strtolower', $names);
+$uppercaseArray = array_map('strtoupper', $names);
+echo "<h2> Lowercase Array</h2>";
+print_r($lowercaseArray);
+echo "<h2> Uppercase Array</h2>";
+print_r($uppercaseArray);
+?>
+
+QUESTION 51:
+<?php
+$fruits = array("Apple", "Banana", "Cherry");
+echo "<h3>Original Array:</h3>";
+print_r($fruits);
+$removed = array_shift($fruits);
+echo "<br><strong>Removed (array_shift):</strong> $removed<br>";
+print_r($fruits);
+array_unshift($fruits, "Mango", "Pineapple");
+echo "<br><strong>After array_unshift:</strong><br>";
+print_r($fruits);
+?>
+
+QUESTION 52:
+<?php
+echo "<h2> Stack (LIFO)</h2>";
+$stack = array();
+array_push($stack, "Apple");
+array_push($stack, "Banana");
+array_push($stack, "Cherry");
+echo "Stack after pushes: ";
+print_r($stack);
+$popped = array_pop($stack);
+echo "<br>Element popped: $popped<br>";
+echo "Stack after pop: ";
+print_r($stack);
+echo "<hr>";
+echo "<h2> Queue (FIFO)</h2>";
+$queue = array();
+array_push($queue, "Red");
+array_push($queue, "Green");
+array_push($queue, "Blue");
+echo "Queue after enqueues: ";
+print_r($queue);
+$dequeued = array_shift($queue);
+echo "<br>Element dequeued: $dequeued<br>";
+echo "Queue after dequeue: ";
+print_r($queue);
+?>
+
+QUESTION 53:
+<?php
+$numbers = array(10, 20, 30, 40, 50);
+echo "<h2>Original Array:</h2>";
+print_r($numbers);
+echo "<hr><h3>Using array_pop() (removes from END)</h3>";
+$popValue = array_pop($numbers);
+echo "Value removed using array_pop(): $popValue<br>";
+echo "Array after array_pop(): ";
+print_r($numbers);
+echo "<hr><h3>Reset Array for array_shift() Example</h3>";
+$numbers = array(10, 20, 30, 40, 50);
+echo "Original Array Again: ";
+print_r($numbers);
+echo "<hr><h3>Using array_shift() (removes from BEGINNING)</h3>";
+$shiftValue = array_shift($numbers);
+echo "Value removed using array_shift(): $shiftValue<br>";
+echo "Array after array_shift(): ";
+print_r($numbers);
+?>
+
+QUESTION 54:
+<?php
+$ticketQueue = array();
+function bookTicket(&$queue, $name) {
+    array_push($queue, $name); 
+    echo "$name has been added to the booking queue.<br>";
+}
+function serveCustomer(&$queue) {
+    if (!empty($queue)) {
+        $customer = array_shift($queue); 
+        echo "$customer's ticket has been booked!<br>";
+    } else {
+        echo "No customers in the queue.<br>";
+    }
+}
+bookTicket($ticketQueue, "Dhanuja");
+bookTicket($ticketQueue, "Lakshmi");
+bookTicket($ticketQueue, "Jannai");
+bookTicket($ticketQueue, "Amirtha");
+bookTicket($ticketQueue, "Gopika");
+bookTicket($ticketQueue, "Jes");
+echo "<hr><b>Current Queue:</b><br>";
+print_r($ticketQueue);
+echo "<hr><b>Serving Customers:</b><br>";
+serveCustomer($ticketQueue);
+serveCustomer($ticketQueue);
+echo "<hr><b>Queue after serving two customers:</b><br>";
+print_r($ticketQueue);
+?>
+
+QUESTION 56:
+<?php
+function reverseString($input) {
+    $stack = array();
+    for ($i = 0; $i < strlen($input); $i++) {
+        array_push($stack, $input[$i]);
+    }
+    $reversed = '';
+    while (!empty($stack)) {
+        $reversed .= array_pop($stack);
+    }
+    return $reversed;
+}
+$original = "Hello World";
+echo "Original String: " . $original . "<br>";
+echo "Reversed String: " . reverseString($original);
+?>
+
+QUESTION 57:
+<?php
+echo "<h2>Regular Expression Examples in PHP</h2>";
+$email = "test@example.com";
+if (preg_match("/^[\w.-]+@[\w.-]+\.[a-z]{2,}$/i", $email)) {
+    echo " Valid Email<br>";
+} else {
+    echo " Invalid Email<br>";
+}
+$text = "There are 3 cats, 14 dogs, and 27 birds.";
+preg_match_all("/\d+/", $text, $matches);
+echo "Numbers Found: ";
+print_r($matches[0]);
+echo "<br>";
+$str = "Hello    World   PHP";
+$result = preg_replace("/\s+/", " ", $str);
+echo "After Space Cleanup: $result<br>";
+$str2 = "apple,banana;cherry orange";
+$parts = preg_split("/[^a-z]+/i", $str2);
+echo "Split Words: ";
+print_r($parts);
+echo "<br>";
+$sentence = "Dhanuja and Lakshmi went to Chennai with Gopika.";
+preg_match_all("/\b[A-Z][a-z]*\b/", $sentence, $names);
+echo "Names Found: ";
+print_r($names[0]);
+?>
+
+QUESTION 58:
+<?php
+echo "<h2>Extract Email Addresses using Regular Expressions</h2>";
+$text = "Contact us at support@example.com, sales@myshop.in or admin@test.org for more info.";
+$pattern = "/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}/";
+if (preg_match_all($pattern, $text, $matches)) {
+    echo "<strong>Extracted Email Addresses:</strong><br>";
+    foreach ($matches[0] as $email) {
+        echo $email . "<br>";
+    }
+} else {
+    echo "No email addresses found.";
+}
+?>
+
+QUESTION 59:
+<?php
+function calculateAverage($numbers) {
+    if (count($numbers) === 0) {
+        return 0; 
+    }
+    $sum = array_sum($numbers); 
+    $average = $sum / count($numbers); 
+    return $average;
+}
+$nums = array(10, 20, 30, 40, 50);
+$avg = calculateAverage($nums);
+echo "Numbers: " . implode(", ", $nums) . "<br>";
+echo "Average Value: " . $avg;
+?>
+
+QUESTION 60:
+<?php
+function searchValueInAssocArray($array, $value) {
+    $keys = array_keys($array, $value, true); 
+    return $keys;
+}
+$students = array(
+    "dhanuja" => 95,
+    "lakshmi" => 82,
+    "janani"  => 68,
+    "amirtha" => 74,
+    "gopika"  => 55,
+    "jes"     => 82
+);
+$searchValue = 82;
+$resultKeys = searchValueInAssocArray($students, $searchValue);
+if (!empty($resultKeys)) {
+    echo "Value $searchValue found in: " . implode(", ", $resultKeys);
+} else {
+    echo "Value $searchValue not found in the array.";
+}
+?>
+
+QUESTION 61:
+<?php
+echo "<h1>Delete an Element from an Array in PHP</h1>";
+$students = array("dhanuja", "lakshmi", "janani", "amirtha", "gopika", "jes");
+echo "<h3>Original Array:</h3>";
+print_r($students);
+$elementToDelete = "janani";
+$index = array_search($elementToDelete, $students);
+if ($index !== false) {
+    unset($students[$index]);
+}
+$students = array_values($students);
+echo "<h3>Array After Deleting '$elementToDelete':</h3>";
+print_r($students);
+?>
+
+QUESTION 62:
+<?php
+echo "<h1>Rounding Values in PHP</h1>";
+$values = array(1.65, 1.65, -1.54);
+echo "<h3>Original Values:</h3>";
+print_r($values);
+$roundedValues = array_map(function($val) {
+    return round($val, 1);
+}, $values);
+echo "<h3>Rounded Values (1 decimal place):</h3>";
+print_r($roundedValues);
+?>
+
+QUESTION 63:
+<?php
+echo "<h1>Sum of Even Numbers in an Array</h1>";
+function sumEvenNumbers($numbers) {
+    $sum = 0;
+    foreach ($numbers as $num) {
+        if ($num % 2 == 0) {  
+            $sum += $num;
+        }
+    }
+    return $sum;
+}
+$array = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+echo "<h3>Array:</h3>";
+print_r($array);
+$sumEven = sumEvenNumbers($array);
+echo "<h3>Sum of Even Numbers:</h3>";
+echo $sumEven;
+?>
+
+QUESTION 65:
+<?php
+$mainString = "The quick brown fox jumps over the lazy dog";
+$searchString = "fox";
+if (strpos($mainString, $searchString) !== false) {
+    echo "The string '<b>$searchString</b>' was found in the main string.";
+} else {
+    echo "The string '<b>$searchString</b>' was NOT found in the main string.";
+}
+?>
+
+QUESTION 67:
+<?php
+$sentence = "PHP is great. PHP is easy to learn. Learning PHP is fun!";
+$sentence = strtolower($sentence);
+preg_match_all("/\w+/", $sentence, $words);
+$wordsArray = $words[0];
+$wordCounts = array_count_values($wordsArray);
+echo "<h2>Word Occurrences</h2>";
+echo "<table border='1' cellpadding='5'>";
+echo "<tr><th>Word</th><th>Count</th></tr>";
+foreach ($wordCounts as $word => $count) {
+    echo "<tr><td>" . htmlspecialchars($word) . "</td><td>" . $count . "</td></tr>";
+}
+echo "</table>";
+?>
+
+QUESTION 68:
+<?php
+function divide($numerator, $denominator) {
+    if ($denominator == 0) {
+        throw new Exception("Error: Division by zero is not allowed.");
+    }
+    return $numerator / $denominator;
+}
+$numerator = 10;
+$denominator = 0;
+
+try {
+    $result = divide($numerator, $denominator);
+    echo "Result: " . $result;
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
+?>
+
+QUESTION 69:
+<?php
+$Color = array('A' => 'Blue', 'B' => 'Green', 'c' => 'Red');
+function arrayToLower($arr) {
+    return array_map('strtolower', $arr);
+}
+function arrayToUpper($arr) {
+    return array_map('strtoupper', $arr);
+}
+$lowerCaseArray = arrayToLower($Color);
+echo "Values are in lower case.<br>";
+print_r($lowerCaseArray);
+echo "<br><br>";
+$upperCaseArray = arrayToUpper($Color);
+echo "Values are in upper case.<br>";
+print_r($upperCaseArray);
+?>
+
+
