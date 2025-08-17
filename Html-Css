@@ -609,3 +609,233 @@ echo "</table>";
 ?>
 </body>
 </html>
+
+QUESTION 39:
+<?php
+$students = array();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+   $name = $_POST['student_name'];
+    $score = floatval($_POST['student_score']);
+    if ($score >= 90) {
+        $grade = "A+";
+    } elseif ($score >= 80) {
+        $grade = "A";
+    } elseif ($score >= 70) {
+        $grade = "B";
+    } elseif ($score >= 60) {
+        $grade = "C";
+    } elseif ($score >= 50) {
+        $grade = "D";
+    } else {
+        $grade = "F";
+    }
+    session_start();
+    if (!isset($_SESSION['students'])) {
+        $_SESSION['students'] = array();
+    }
+    $_SESSION['students'][] = array(
+        "name" => $name,
+        "score" => $score,
+        "grade" => $grade
+    );
+
+    $students = $_SESSION['students'];
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Grade Calculator</title>
+</head>
+<body>
+<h2>Student Grade Input</h2>
+<form method="post">
+    Name: <input type="text" name="student_name" required>
+    Score: <input type="number" name="student_score" min="0" max="100" required>
+    <button type="submit">Add Student</button>
+</form>
+
+<?php
+if (!empty($students)) {
+    echo "<h2>Summary Report</h2>";
+    echo "<table border='1' cellpadding='5'>";
+    echo "<tr><th>Name</th><th>Score</th><th>Grade</th></tr>";
+    foreach ($students as $s) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($s['name']) . "</td>";
+        echo "<td>" . htmlspecialchars($s['score']) . "</td>";
+        echo "<td>" . htmlspecialchars($s['grade']) . "</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+}
+?>
+</body>
+</html>
+
+QUESTION 44:
+<?php
+session_start();
+if (!isset($_SESSION['playlists'])) {
+    $_SESSION['playlists'] = array();
+}
+$playlists = &$_SESSION['playlists'];
+function createPlaylist(&$playlists, $name) {
+    if (!isset($playlists[$name])) {
+        $playlists[$name] = array();
+    }
+}
+function addSong(&$playlists, $playlistName, $title, $artist, $duration) {
+    if (isset($playlists[$playlistName])) {
+        $playlists[$playlistName][] = array(
+            "title" => $title,
+            "artist" => $artist,
+            "duration" => $duration
+        );
+    }
+}
+function removeSong(&$playlists, $playlistName, $title) {
+    if (isset($playlists[$playlistName])) {
+        $playlists[$playlistName] = array_filter($playlists[$playlistName], function($song) use ($title) {
+            return $song['title'] !== $title;
+        });
+        $playlists[$playlistName] = array_values($playlists[$playlistName]);
+    }
+}
+function sortPlaylist(&$playlists, $playlistName) {
+    if (isset($playlists[$playlistName])) {
+        usort($playlists[$playlistName], function($a, $b) {
+            return strcmp($a['title'], $b['title']);
+        });
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['create_playlist'])) {
+        createPlaylist($playlists, trim($_POST['playlist_name']));
+    }
+    if (isset($_POST['add_song'])) {
+        addSong($playlists, $_POST['playlist_select'], $_POST['song_title'], $_POST['song_artist'], $_POST['song_duration']);
+    }
+    if (isset($_POST['remove_song'])) {
+        removeSong($playlists, $_POST['playlist_remove'], $_POST['song_remove_title']);
+    }
+    if (isset($_POST['sort_playlist'])) {
+        sortPlaylist($playlists, $_POST['playlist_sort']);
+    }
+}
+
+$selectedPlaylist = $_POST['view_playlist'] ?? "";
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Playlist Manager</title>
+</head>
+<body>
+<h1>🎵 Music Playlist Management</h1>
+<form method="post">
+    <h2>Create Playlist</h2>
+    <input type="text" name="playlist_name" placeholder="Playlist Name" required>
+    <button type="submit" name="create_playlist">Create</button>
+</form>
+<form method="post">
+    <h2>Add Song</h2>
+    <select name="playlist_select" required>
+        <option value="">-- Select Playlist --</option>
+        <?php foreach (array_keys($playlists) as $name): ?>
+            <option value="<?php echo htmlspecialchars($name); ?>"><?php echo htmlspecialchars($name); ?></option>
+        <?php endforeach; ?>
+    </select><br><br>
+    <input type="text" name="song_title" placeholder="Song Title" required>
+    <input type="text" name="song_artist" placeholder="Artist" required>
+    <input type="text" name="song_duration" placeholder="Duration (e.g. 3:45)" required>
+    <button type="submit" name="add_song">Add Song</button>
+</form>
+<form method="post">
+    <h2>Remove Song</h2>
+    <select name="playlist_remove" required>
+        <option value="">-- Select Playlist --</option>
+        <?php foreach (array_keys($playlists) as $name): ?>
+            <option value="<?php echo htmlspecialchars($name); ?>"><?php echo htmlspecialchars($name); ?></option>
+        <?php endforeach; ?>
+    </select><br><br>
+    <input type="text" name="song_remove_title" placeholder="Song Title to Remove" required>
+    <button type="submit" name="remove_song">Remove Song</button>
+</form>
+<form method="post">
+    <h2>Sort Playlist</h2>
+    <select name="playlist_sort" required>
+        <option value="">-- Select Playlist --</option>
+        <?php foreach (array_keys($playlists) as $name): ?>
+            <option value="<?php echo htmlspecialchars($name); ?>"><?php echo htmlspecialchars($name); ?></option>
+        <?php endforeach; ?>
+    </select>
+    <button type="submit" name="sort_playlist">Sort Songs</button>
+</form>
+<form method="post">
+    <h2>View Playlist</h2>
+    <select name="view_playlist" required>
+        <option value="">-- Select Playlist --</option>
+        <?php foreach (array_keys($playlists) as $name): ?>
+            <option value="<?php echo htmlspecialchars($name); ?>" <?php if ($selectedPlaylist === $name) echo "selected"; ?>>
+                <?php echo htmlspecialchars($name); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    <button type="submit">View</button>
+</form>
+
+<hr>
+<h2> Playlist Details</h2>
+<?php
+if ($selectedPlaylist && isset($playlists[$selectedPlaylist])) {
+    echo "<h3> " . htmlspecialchars($selectedPlaylist) . "</h3>";
+    if (empty($playlists[$selectedPlaylist])) {
+        echo "<p>No songs in this playlist.</p>";
+    } else {
+        foreach ($playlists[$selectedPlaylist] as $song) {
+            echo htmlspecialchars($song['title']) . " - " . htmlspecialchars($song['artist']) . " (" . htmlspecialchars($song['duration']) . ")<br>";
+        }
+    }
+} else {
+    echo "<p>No playlist selected.</p>";
+}
+?>
+</body>
+</html>
+
+QUESTION 70:
+<?php
+$numbers = array(); 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $input = $_POST['numbers_input'];
+    $numbers = preg_split("/[\s,]+/", $input);
+    $numbers = array_map('floatval', $numbers);
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Number Input to Array</title>
+</head>
+<body>
+<h2>Enter a sequence of numbers (comma or space separated):</h2>
+<form method="post">
+    <input type="text" name="numbers_input" size="50" placeholder="e.g. 1, 2, 3, 4, 5" required>
+    <button type="submit">Submit</button>
+</form>
+
+<?php
+if (!empty($numbers)) {
+    echo "<h3>Numbers stored in array:</h3>";
+    echo "<pre>";
+    print_r($numbers);
+    echo "</pre>";
+}
+?>
+</body>
+</html>
