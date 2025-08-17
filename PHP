@@ -830,4 +830,308 @@ echo "Values are in upper case.<br>";
 print_r($upperCaseArray);
 ?>
 
+QUESTION 72:
+<?php
+session_start();
+$_SESSION["username"] = "Dhanu";
+$_SESSION["email"] = "dhanu@gmail.com";
+echo "<h3>Session variables are set.</h3>";
+echo "Username: " . $_SESSION["username"] . "<br>";
+echo "Email: " . $_SESSION["email"] . "<br>";
+session_unset();
+echo "<h3>After session_unset():</h3>";
+var_dump($_SESSION); 
+session_destroy();
+echo "<h3>Session destroyed.</h3>";
+?>
 
+QUESTION 73:
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $fileName = $_FILES["myfile"]["name"];
+    $fileTmp  = $_FILES["myfile"]["tmp_name"];
+    $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+    $allowedExt = ["jpg", "jpeg", "png"];
+    if (!in_array($fileExt, $allowedExt)) {
+        echo "<h3 style='color:red;'>Error: Only JPG and PNG files are allowed!</h3>";
+    } else {
+        if (move_uploaded_file($fileTmp, "uploads/" . $fileName)) {
+            echo "<h3 style='color:green;'>File uploaded successfully!</h3>";
+        } else {
+            echo "<h3 style='color:red;'>Error uploading file.</h3>";
+        }
+    }
+}
+?>
+<form method="post" enctype="multipart/form-data">
+    <label>Select image (JPG or PNG only):</label><br><br>
+    <input type="file" name="myfile" required>
+    <br><br>
+    <input type="submit" value="Upload">
+</form>
+
+QUESTION 74:
+<?php
+$file = fopen("sample.txt", "w"); 
+if ($file) {
+    fwrite($file, "Hello, this is the first line.\n");
+    fwrite($file, "This is the second line in the file.\n");
+    fclose($file); 
+    echo "<b>Data written to 'sample.txt' successfully.</b><br><br>";
+} else {
+    echo "Unable to open file for writing.<br>";
+    exit;
+}
+$file = fopen("sample.txt", "r"); // Open file in read mode
+if ($file) {
+    echo "<b>Reading file line-by-line with fgets():</b><br>";
+    while (!feof($file)) { // Loop until end of file
+        echo fgets($file) . "<br>";
+    }
+    fclose($file);
+} else {
+    echo "Unable to open file for reading.<br>";
+}
+echo "<br><b>Reading entire file with file_get_contents():</b><br>";
+$content = file_get_contents("sample.txt");
+echo nl2br($content); // nl2br() to keep line breaks in HTML
+?>
+
+QUESTION 75:
+<?php
+function appendLineToFile($filename, $newLine) {
+    $file = fopen($filename, "a");
+    if ($file) {
+        fwrite($file, $newLine . "\n"); 
+        fclose($file);
+        echo "Line appended successfully to '$filename'.<br>";
+    } else {
+        echo "Unable to open file: $filename<br>";
+    }
+}
+$filename = "mydata.txt";
+$newContent = "This is a newly added line.";
+appendLineToFile($filename, $newContent);
+echo "<b>Current contents of '$filename':</b><br>";
+echo nl2br(file_get_contents($filename));
+?>
+
+QUESTION 78:
+<?php
+if (!isset($_COOKIE["username"])) {
+    setcookie("username", "Dhanuja", time() + 3600, "/"); 
+    echo "Cookie 'username' is set with value 'lakshmisree'. Please refresh the page.<br>";
+} else {
+    echo "Cookie Value: " . $_COOKIE["username"] . "<br>";
+    setcookie("username", "", time() - 3600, "/");
+    echo "Cookie 'username' has been deleted.<br>";
+}
+?>
+
+QUESTION 79:
+<?php
+$file1 = "test.txt";
+$file2 = "test2.txt";
+$outputFile = "output.txt";
+$content1 = file_get_contents($file1);
+$content2 = file_get_contents($file2);
+$fp = fopen($outputFile, "a");
+fwrite($fp, $content1 . PHP_EOL); 
+fwrite($fp, $content2 . PHP_EOL); 
+fclose($fp);
+echo "Files appended successfully to $outputFile";
+?>
+
+QUESTION 80:
+<?php
+setcookie("TestCookie", "HelloCookie", time() + 3600, "/"); 
+if (isset($_COOKIE["TestCookie"])) {
+    echo "TestCookie Value: " . $_COOKIE["TestCookie"];
+} else {
+    echo "TestCookie has been set. Please refresh the page to see its value.";
+}
+?>
+
+QUESTION 82:
+<?php
+setcookie("basic_cookie", "HelloCookie");
+setcookie("hour_cookie", "Expires in 1 hour", time() + 3600);
+setcookie("path_cookie", "Site-wide cookie", time() + 3600, "/");
+setcookie("domain_cookie", "Domain specific cookie", time() + 3600, "/", "localhost");
+setcookie("secure_cookie", "SecureData", time() + 3600, "/", "", true, true);
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>setcookie() Examples</title>
+</head>
+<body>
+<h2>PHP setcookie() Examples</h2>
+<p>Cookies have been set. Please refresh this page to see their values.</p>
+<?php
+if (!empty($_COOKIE)) {
+    echo "<h3>Current Cookies:</h3>";
+    foreach ($_COOKIE as $name => $value) {
+        echo htmlspecialchars($name) . " = " . htmlspecialchars($value) . "<br>";
+    }
+} else {
+    echo "<p>No cookies found yet. Reload the page.</p>";
+}
+?>
+</body>
+</html>
+
+QUESTION 83:
+<?php
+$validationResult = "";
+$domainName = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = trim($_POST["email"]);
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $validationResult = "Valid email address ";
+        $parts = explode("@", $email);
+        $domainName = $parts[1];
+    } else {
+        $validationResult = "Invalid email address ";
+    }
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Validation</title>
+</head>
+<body>
+<h2>Email Validation & Domain Extraction</h2>
+<form method="post">
+    <label>Enter Email Address:</label><br>
+    <input type="email" name="email" required>
+    <input type="submit" value="Validate">
+</form>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    echo "<h3>Result:</h3>";
+    echo "<p>$validationResult</p>";
+    if (!empty($domainName)) {
+        echo "<p>Domain Name: <b>$domainName</b></p>";
+    }
+}
+?>
+</body>
+</html>
+
+QUESTION 84:
+<?php
+session_start(); 
+if (isset($_GET['action']) && $_GET['action'] == 'set') {
+    $_SESSION['username'] = "Dhanuja";
+    $_SESSION['email'] = "dhanu@example.com";
+}
+if (isset($_GET['action']) && $_GET['action'] == 'remove_username') {
+    unset($_SESSION['username']);
+}
+if (isset($_GET['action']) && $_GET['action'] == 'destroy') {
+    session_unset();
+    session_destroy();
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PHP Session Example</title>
+</head>
+<body>
+<h2>Session Handling Example</h2>
+<a href="?action=set">Set Session Values</a> | 
+<a href="?action=remove_username">Remove 'username'</a> | 
+<a href="?action=destroy">Destroy All Sessions</a>
+<hr>
+<h3>Current Session Data:</h3>
+<pre>
+<?php
+if (!empty($_SESSION)) {
+    print_r($_SESSION);
+} else {
+    echo "No session data found.";
+}
+?>
+</pre>
+</body>
+</html>
+
+QUESTION 86:
+<?php
+echo "<h3>PHP File Functions </h3>";
+$file = fopen("test.txt", "r") or die("Unable to open test.txt!");
+$size = filesize("test.txt");
+echo "File size: $size bytes<br>";
+echo "<b>Using fread():</b><br>";
+echo nl2br(fread($file, $size)) . "<br>";
+fclose($file);
+echo "<b>Using file_get_contents():</b><br>";
+echo nl2br(file_get_contents("test.txt")) . "<br>";
+$file = fopen("test.txt", "r");
+echo "<b>Reading line-by-line:</b><br>";
+while (!feof($file)) {
+    echo nl2br(fgets($file));
+}
+fclose($file);
+file_put_contents("test.txt", "\nThis line is appended by PHP.", FILE_APPEND);
+$newFile = fopen("newfile.txt", "w");
+fwrite($newFile, "This is a new file created with fwrite().\n");
+fclose($newFile);
+copy("test.txt", "copy.txt");
+rename("copy.txt", "renamed.txt");
+unlink("renamed.txt");
+unlink("newfile.txt");
+echo "<br><b>All file operations completed successfully!</b>";
+?>
+
+QUESTION 88:
+<?php
+$birthMonth = 05;
+$birthDay = 29;
+$today = new DateTime();
+$thisYear = (int)$today->format('Y');
+$birthdayThisYear = DateTime::createFromFormat('Y-n-j', "$thisYear-$birthMonth-$birthDay");
+if ($birthdayThisYear < $today) {
+    $birthdayThisYear->modify('+1 year');
+}
+$interval = $today->diff($birthdayThisYear);
+$daysUntil = $interval->days;
+if ($daysUntil === 0) {
+    echo "Happy Birthday! ";
+} elseif ($daysUntil === 1) {
+    echo "It's tomorrow! Just 1 day to go.";
+} else {
+    echo "Your birthday is in $daysUntil days.";
+}
+?>
+
+QUESTION 89:
+<?php
+$filename = "test.txt";
+if (file_exists($filename)) {
+    $file = fopen($filename, "r");
+    $content = fread($file, filesize($filename));
+    echo $content;
+    fclose($file);
+} else {
+    echo "File does not exist.";
+}
+?>
+
+QUESTION 90:
+<?php
+$filename = "test.txt";
+if (file_exists($filename)) {
+    $file = fopen($filename, "r") or die("Unable to open file!");
+    while (!feof($file)) {
+        echo fgets($file) . "<br>"; // Read line by line
+    }
+    fclose($file);
+} else {
+    echo "File not found!";
+}
+?>
